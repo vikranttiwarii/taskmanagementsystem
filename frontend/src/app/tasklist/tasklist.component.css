@@ -1,0 +1,11 @@
+.completed-button {
+    background-color: #4caf50 !important; 
+    color: white !important;            
+    box-shadow: none;                   
+    border: none;                        
+}
+.completed-button:disabled {
+    background-color: #bfbfbf !important;
+    color: #fff;
+    cursor: not-allowed;
+}

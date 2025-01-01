@@ -1,0 +1,134 @@
+
+<div class="d-flex justify-content-end align-items-center p-3">
+    <mat-form-field class="me-3 mb-0" appearance="fill" style="width: 300px;">
+        <mat-label>Fiter By Status</mat-label>
+        <mat-select
+            class="w-100"
+            panelClass="custom-overlay-panel"
+            (selectionChange)="filterByStatus($event)">
+            <mat-option value="Pending" class="full-width-option">
+                Pending
+            </mat-option>
+            <mat-option value="Completed" class="full-width-option">
+                Completed
+            </mat-option>
+            <mat-option value="Both" class="full-width-option">
+                Both
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="me-2"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal" (click)="getUserListAccToRole()">
+        {{toggle ? 'Add Task' : 'Task List'}}
+    </button>
+    <button mat-raised-button color="warn" style="margin-right: 7px;"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal" *ngIf="roleId==1" (click)="viewuserlist()">view userlist</button>
+    <button mat-raised-button color="accent"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal" (click)="logout()">Logout</button>
+</div>
+
+<div *ngIf="toggle" class="container" style="padding: 50px 100px 0px 100px;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Status</th>
+                <th scope="col">createdAt</th>
+                <th scope="col">updatedAt</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let element of taskList">
+            <tr>
+                <td>{{element.title}}</td>
+                <td>{{element.discription}}</td>
+                <td
+                    [ngStyle]="{'color': element.status === 'Pending' ? 'red' : 'green'}">
+                    {{element.status}}
+                </td>
+                <td>{{element.createdAt | date : 'MMM d, y'}}</td>
+                <td>{{element.updatedAt | date : 'MMM d, y'}}</td>
+                <td *ngIf="roleId==2||roleId==3">
+                    <button
+                        mat-raised-button
+                        class="completed-button"
+                        style="margin-right: 7px;"
+                        *ngIf="element.taskOwnerId === element.assignTo || loggedInId === element.assignTo"
+                        [disabled]="element.status === 'Completed'"
+                        (click)="updateTask(element,'status')">
+                        Completed
+                    </button>
+                    <button mat-raised-button color="primary" class="me-2"
+                        *ngIf="element.taskOwnerId==element.assignTo || element.taskOwnerId==loggedInId"
+                        (click)="updateTask(element,'update')"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Update</button>
+                    <button mat-raised-button color="warn"
+                        *ngIf="element.taskOwnerId==element.assignTo || element.taskOwnerId==loggedInId"
+                        (click)="deleteTask(element._id)">Delete</button>
+                </td>
+                <td *ngIf="roleId==1">
+
+
+                    <button
+                        mat-raised-button
+                        class="completed-button"
+                        style="margin-right: 7px;"
+                        *ngIf="loggedInId==element.assignTo"
+                        [disabled]="element.status === 'Completed'"
+                        (click)="updateTask(element,'status')">
+                        Completed
+                    </button>
+
+                    <button mat-raised-button color="primary" class="me-2"
+                        (click)="updateTask(element,'update')"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Update</button>
+                    <button mat-raised-button color="warn"
+                        (click)="deleteTask(element._id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="!toggle"
+    class="d-flex justify-content-center align-items-center vh-90">
+    <mat-card class="w-100 p-3" style="max-width: 550px;">
+        <div>
+            <form class="formContainer" [formGroup]="taskform"
+                (ngSubmit)="createAndUpdateTask()">
+                <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Title</mat-label>
+                    <input type="text" matInput formControlName="title"
+                        required>
+                </mat-form-field>
+                <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Discription</mat-label>
+                    <input type="text" matInput formControlName="discription"
+                        required>
+                </mat-form-field>
+                <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Assign To</mat-label>
+                    <mat-select
+                        formControlName="assignTo"
+                        class="w-100"
+                        panelClass="custom-overlay-panel">
+                        <mat-option *ngFor="let user of userList"
+                            [value]="user._id" class="full-width-option">
+                            {{ user.username }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="text-center mt-3">
+                    <button mat-raised-button color="primary"
+                        class="w-100">Add Task</button>
+                </div>
+            </form>
+        </div>
+    </mat-card>
+</div>

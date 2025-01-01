@@ -1,0 +1,23 @@
+
+<div style="text-align: right; padding-right: 20px; padding-top: 20px;">
+    <button mat-raised-button color="accent" routerLink="/tasklist">Go to task list</button>
+</div>
+
+<div class="container" style="padding: 50px 100px 0px 100px;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let element of data">
+            <tr>
+                <td>{{element.username}}</td>
+                <td>{{element.email}}</td>
+                <td>{{element.role}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

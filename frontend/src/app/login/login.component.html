@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <mat-card class="w-100 p-3" style="max-width: 500px;">
+        <div>
+            <form class="formContainer" [formGroup]="loginform" (ngSubmit)="login()">
+                <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput formControlName="email" required>
+                </mat-form-field>
+                <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput formControlName="password" required>
+                </mat-form-field>
+                <div class="text-center mt-3">
+                    <button mat-raised-button color="primary" class="w-100">Login</button>
+                </div>
+            </form>
+            <div class="text-center mt-2">
+                <span>Don't have an account? <a routerLink="/signup" class="text-primary">Register</a></span>
+            </div>
+        </div>
+    </mat-card>
+</div>
